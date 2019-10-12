@@ -24,6 +24,7 @@ namespace DogsVsCats
 
             services.AddScoped<IDataService, DataService>();
             services.AddScoped<IImageAnalyser, ImageAnalyser>();
+            services.AddScoped<IStatsService, StatsService>();
             services.AddScoped<BattleGenerator, BattleGenerator>();
         }
 
