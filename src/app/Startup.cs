@@ -23,6 +23,7 @@ namespace DogsVsCats
             services.AddControllersWithViews();
 
             services.AddScoped<IDataService, DataService>();
+            services.AddScoped<IImageAnalyser, ImageAnalyser>();
             services.AddScoped<BattleGenerator, BattleGenerator>();
         }
 
