@@ -1,0 +1,40 @@
+@model UploadViewModel
+@{
+    ViewData["Title"] = "Upload";
+}
+
+<div class="container mt-5">
+    <div class="row">
+        <form method="post" enctype="multipart/form-data" asp-controller="Upload" asp-action="Index"  >
+            <div class="form-group">
+                <label for="Name">Name</label>
+                <input asp-for="Name" type="text" class="form-control" required placeholder="pick a name">
+            </div>
+            <div class="form-group">
+                <label for="Image">Image</label>
+                <input type="file" class="form-control-file" asp-for="Image">
+            </div>
+            <button type="submit" class="btn btn-primary">Save</button>
+        </form>
+    </div>
+
+    @if(Model != null)
+    {
+        if(!string.IsNullOrEmpty(Model.Errors))
+        {
+            <div class="row mt-2">
+                <div class="alert alert-danger" role="alert">
+                    @Model.Errors
+                </div>
+            </div>
+        }
+        else if(Model.IsSuccess)
+        {
+            <div class="row mt-2">
+                <div class="alert alert-success" role="alert">
+                    Upload Successful
+                </div>
+            </div>
+        }
+    }
+</div>

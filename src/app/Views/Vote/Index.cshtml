@@ -1,0 +1,40 @@
+@model VoteViewModel
+@{
+    ViewData["Title"] = "Votes";
+}
+
+<div class="container mt-5">
+    <form id="voteForm" asp-controller="Vote" asp-action="Vote" method="POST">
+        <div class="row justify-content-md-center align-items-center">
+            <div class="col-sm-5 col-md-4 col-lg-3">
+                <div class="fighter" onclick="submitForm('@Model.DogId')">
+                    <figure class="figure">
+                        <img src="@Model.DogImagePath" class="figure-img img-fluid rounded" alt="@Model.DogName" 
+                            asp-append-version="true" width="250" height="250">
+                        <figcaption class="figure-caption text-right">@Model.DogName</figcaption>
+                    </figure>
+                </div>
+            </div>
+            <div class="col-1 col-sm-1">
+                <h6 class="text-center">VS</h6>
+            </div>
+            <div class="col-sm-5 col-md-4 col-lg-3 fighter">
+                <div class="fighter" onclick="submitForm('@Model.CatId')">
+                    <figure class="figure">
+                            <img src="@Model.CatImagePath" class="figure-img img-fluid rounded" alt="@Model.CatName" 
+                                asp-append-version="true" width="250" height="250">
+                            <figcaption class="figure-caption text-right">@Model.CatName</figcaption>
+                    </figure>
+                </div>
+            </div>
+        </div>
+        <input type="hidden" name="fighterId"/>
+    </form>
+</div>
+
+<script>
+    function submitForm(fighterId) {
+        document.getElementsByName("fighterId")[0].value = fighterId;
+        document.getElementById("voteForm").submit();
+    }
+</script>
