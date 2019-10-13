@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Hosting;
+using Google.Cloud.Diagnostics.AspNetCore;
 
 namespace DogsVsCats
 {
@@ -14,6 +15,7 @@ namespace DogsVsCats
             Host.CreateDefaultBuilder(args)
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
+                    webBuilder.UseGoogleDiagnostics();
                     webBuilder.UseStartup<Startup>();
                 });
     }

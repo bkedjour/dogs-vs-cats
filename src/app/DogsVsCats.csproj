@@ -11,6 +11,7 @@
 
   <ItemGroup>
     <PackageReference Include="Google.Cloud.Datastore.V1" Version="2.1.0" />
+    <PackageReference Include="Google.Cloud.Diagnostics.AspNetCore" Version="3.0.0-beta14" />
     <PackageReference Include="Google.Cloud.Storage.V1" Version="2.3.0" />
     <PackageReference Include="Google.Cloud.Vision.V1" Version="1.6.0" />
   </ItemGroup>
