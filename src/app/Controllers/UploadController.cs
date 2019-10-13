@@ -2,8 +2,10 @@ using System.Threading.Tasks;
 using DogsVsCats.Contracts;
 using DogsVsCats.Models;
 using DogsVsCats.ViewModels;
+using Google.Cloud.PubSub.V1;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
 
 namespace DogsVsCats.Controllers
 {
@@ -11,13 +13,16 @@ namespace DogsVsCats.Controllers
     {
         private readonly IDataService _dataService;
         private readonly IImageAnalyser _imageDescriptor;
-        private readonly IConfiguration _configuration;
+        private readonly GcpConfiguration _config;
 
-        public UploadController(IDataService dataService, IImageAnalyser imageDescriptor, IConfiguration configuration)
+        private readonly ILogger _logger;
+
+        public UploadController(IDataService dataService, IImageAnalyser imageDescriptor, GcpConfiguration config, ILogger<UploadController> logger)
         {
             _dataService = dataService;
             _imageDescriptor = imageDescriptor;
-            _configuration = configuration;
+            _config = config;
+            _logger = logger;
         }
 
         public IActionResult Index()
@@ -44,8 +49,14 @@ namespace DogsVsCats.Controllers
                 return View(model);
             }
 
-            await _dataService.SaveFighterAsync(new Fighter { Name = model.Name },
+            var fighterId = await _dataService.SaveFighterAsync(new Fighter { Name = model.Name },
                             image, model.Image.ContentType, fighterType.Value);
+
+            TopicName topicName = new TopicName(_config.ProjectId, _config.Topic);
+            PublisherClient publisher = await PublisherClient.CreateAsync(topicName);
+            string messageId = await publisher.PublishAsync(fighterId);
+
+            _logger.LogInformation($"Published message : {messageId}");
 
             return View(new UploadViewModel { IsSuccess = true });
         }

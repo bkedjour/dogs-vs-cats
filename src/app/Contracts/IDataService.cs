@@ -13,7 +13,7 @@ namespace DogsVsCats.Contracts
 
         Task SetFighterVoteAsync(string id);
 
-        Task SaveFighterAsync(Fighter fighter, Stream image, string contentType, FighterType type);
+        Task<string> SaveFighterAsync(Fighter fighter, Stream image, string contentType, FighterType type);
 
         Task<IEnumerable<Fighter>> GetFightersOrderedByVoteAsync();
     }

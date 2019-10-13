@@ -21,12 +21,12 @@ namespace DogsVsCats.Services
 
         private readonly string _bucketName;
 
-        public DataService(IConfiguration configuration)
+        public DataService(GcpConfiguration config)
         {
-            _db = DatastoreDb.Create(configuration["ProjectId"]);
+            _db = DatastoreDb.Create(config.ProjectId);
             _storage = StorageClient.Create();
             _keyFactory = _db.CreateKeyFactory(Kind);
-            _bucketName = configuration["BucketName"];
+            _bucketName = config.BucketName;
         }
 
         public async Task<IEnumerable<string>> GetFightersIdsByTypeAsync(FighterType type)
@@ -79,7 +79,7 @@ namespace DogsVsCats.Services
             }
         }
 
-        public async Task SaveFighterAsync(Fighter fighter, Stream image, string contentType, FighterType type)
+        public async Task<string> SaveFighterAsync(Fighter fighter, Stream image, string contentType, FighterType type)
         {
             var fighterId = Guid.NewGuid().ToString();
 
@@ -102,6 +102,8 @@ namespace DogsVsCats.Services
                 transaction.Upsert(entity);
                 await transaction.CommitAsync();
             }
+
+            return fighterId;
         }
 
         public async Task<IEnumerable<Fighter>> GetFightersOrderedByVoteAsync()

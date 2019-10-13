@@ -1,6 +1,3 @@
-using DogsVsCats.Contracts;
-using DogsVsCats.Models;
-using DogsVsCats.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -8,7 +5,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Options;
 
-namespace DogsVsCats
+namespace ImageProcessor
 {
     public class Startup
     {
@@ -22,12 +19,7 @@ namespace DogsVsCats
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddControllersWithViews();
-
-            services.AddScoped<IDataService, DataService>();
-            services.AddScoped<IImageAnalyser, ImageAnalyser>();
-            services.AddScoped<IStatsService, StatsService>();
-            services.AddScoped<BattleGenerator, BattleGenerator>();
+            services.AddControllers();
 
             services.Configure<GcpConfiguration>(Configuration.GetSection("Gcp"));
             services.AddScoped(sp => sp.GetService<IOptionsSnapshot<GcpConfiguration>>().Value);
@@ -40,24 +32,12 @@ namespace DogsVsCats
             {
                 app.UseDeveloperExceptionPage();
             }
-            else
-            {
-                app.UseExceptionHandler("/Vote/Error");
-                // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
-                app.UseHsts();
-            }
-            app.UseHttpsRedirection();
-            app.UseStaticFiles();
 
             app.UseRouting();
 
-            app.UseAuthorization();
-
             app.UseEndpoints(endpoints =>
             {
-                endpoints.MapControllerRoute(
-                    name: "default",
-                    pattern: "{controller=Vote}/{action=Index}/{id?}");
+                endpoints.MapControllers();
             });
         }
     }
