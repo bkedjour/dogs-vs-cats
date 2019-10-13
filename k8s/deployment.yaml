@@ -1,0 +1,31 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: dogs-vs-cats-deployment
+  labels:
+    app: dogs-vs-cats
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: dogs-vs-cats
+  template:
+    metadata:
+      labels:
+        app: dogs-vs-cats
+    spec:
+      volumes:
+      - name: google-cloud-key
+        secret:
+          secretName: google-cloud-key
+      containers:
+      - name: dogs-vs-cats
+        image: gcr.io/quarter-backs-preview/dogs-vs-cats:1.0
+        ports:
+        - containerPort: 80
+        volumeMounts:
+        - name: google-cloud-key
+          mountPath: /var/secrets/google
+        env:
+        - name: GOOGLE_APPLICATION_CREDENTIALS
+          value: /var/secrets/google/key.json
