@@ -20,7 +20,7 @@ spec:
           secretName: google-cloud-key
       containers:
       - name: dogs-vs-cats
-        image: gcr.io/quarter-backs-preview/dogs-vs-cats:1.0
+        image: gcr.io/qb-net/dogs-vs-cats:1.0
         ports:
         - containerPort: 80
         volumeMounts:
